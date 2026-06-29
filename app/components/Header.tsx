@@ -1,6 +1,19 @@
-import Link from 'next/link'
+'use client'
 
-export default function Header() {
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { createClient } from '../../lib/supabase-browser'
+
+export default function Header({ nickname }: { nickname: string | null }) {
+  const router = useRouter()
+  const supabase = createClient()
+
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    router.push('/')
+    router.refresh()
+  }
+
   return (
     <header className="header">
       <div className="header-inner">
@@ -24,8 +37,17 @@ export default function Header() {
         </div>
 
         <div className="header-actions">
-          <Link href="/login" className="login">로그인</Link>
-          <button className="btn-write">글쓰기</button>
+          {nickname ? (
+            <>
+              <span className="login">{nickname}님</span>
+              <button className="btn-write" onClick={handleLogout}>로그아웃</button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="login">로그인</Link>
+              <button className="btn-write">글쓰기</button>
+            </>
+          )}
         </div>
       </div>
     </header>
