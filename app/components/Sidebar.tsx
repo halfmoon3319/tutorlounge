@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 type Board = {
   id: number
@@ -13,6 +16,8 @@ type Group = {
 }
 
 export default function Sidebar({ groups }: { groups: Group[] }) {
+  const pathname = usePathname()
+
   return (
     <aside className="sidebar">
       <div className="nav-active">
@@ -23,15 +28,19 @@ export default function Sidebar({ groups }: { groups: Group[] }) {
       {groups.map((group) => (
         <div className="nav-section" key={group.id}>
           <div className="nav-group">{group.name}</div>
-          {group.boards.map((board) => (
-            <Link
-              href={`/boards/${board.slug}`}
-              className="nav-item"
-              key={board.id}
-            >
-              <span className="left">{board.name}</span>
-            </Link>
-          ))}
+          {group.boards.map((board) => {
+            const isActive = pathname === `/boards/${board.slug}` ||
+              pathname?.startsWith(`/boards/${board.slug}/`)
+            return (
+              <Link
+                href={`/boards/${board.slug}`}
+                className={isActive ? 'nav-item active' : 'nav-item'}
+                key={board.id}
+              >
+                <span className="left">{board.name}</span>
+              </Link>
+            )
+          })}
         </div>
       ))}
     </aside>

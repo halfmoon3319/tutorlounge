@@ -95,7 +95,20 @@ export default function WritePage() {
     }
     init()
   }, [slug, router, supabase])
+// 작성 중 내용이 있는지 판단
+  const hasContent = title.trim().length > 0 || !isEmptyHtml(body)
 
+  // 브라우저 이탈(새로고침/탭닫기/뒤로가기) 시 경고
+  useEffect(() => {
+    function handleBeforeUnload(e: BeforeUnloadEvent) {
+      if (hasContent && !loading) {
+        e.preventDefault()
+        e.returnValue = ''
+      }
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [hasContent, loading])
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files?.[0]
     setFile(selected ?? null)
