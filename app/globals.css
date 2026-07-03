@@ -546,3 +546,32 @@ body {
   font-size: 13px;
   font-weight: bold;
 }
+/* ===== 연번 + 카테고리 색상 (파일 맨 아래 추가) ===== */
+
+/* 번호 컬럼을 위해 그리드에 맨 앞 44px 추가 */
+.list-header, .list-row {
+  grid-template-columns: 44px 96px 1fr 84px 60px 56px 56px;
+}
+.list-header.no-cat, .list-row.no-cat {
+  grid-template-columns: 44px 1fr 84px 60px 56px 56px;
+}
+
+/* 번호 컬럼 스타일 */
+.col-num {
+  font-size: 12px; color: var(--hint); text-align: center;
+}
+
+/* 카테고리별 색상 */
+.cat-tag.cat-korean   { color: #B23A48; background: #FCE8EA; }
+.cat-tag.cat-math     { color: #1D4E89; background: #E5EEF7; }
+.cat-tag.cat-science  { color: #2E7D5B; background: #E4F3EB; }
+.cat-tag.cat-social   { color: #8A5A2B; background: #F5EBDD; }
+.cat-tag.cat-english  { color: #6A3EA1; background: #EFE7F7; }
+.cat-tag.cat-art      { color: #C2410C; background: #FBEADF; }
+.cat-tag.cat-computer { color: #0F766E; background: #DEF2F0; }
+.cat-tag.cat-etc      { color: #52525B; background: #EDEDF0; }
+
+/* 모바일에서 번호 숨기기 */
+@media (max-width: 640px) {
+  .col-num { display: none; }
+}

@@ -3,6 +3,26 @@ import { createClient } from '../../../lib/supabase-server'
 import Sidebar from '../../components/Sidebar'
 import { notFound } from 'next/navigation'
 
+// 카테고리 이름 → 색상 클래스 매핑
+const CAT_COLOR: Record<string, string> = {
+  '국어': 'cat-korean',
+  '논술': 'cat-korean',
+  '수학': 'cat-math',
+  '과학': 'cat-science',
+  '사회': 'cat-social',
+  '영어': 'cat-english',
+  '예체능': 'cat-art',
+  '컴퓨터': 'cat-computer',
+  '코딩': 'cat-computer',
+}
+function catClass(name?: string) {
+  if (!name) return 'cat-etc'
+  for (const key in CAT_COLOR) {
+    if (name.includes(key)) return CAT_COLOR[key]
+  }
+  return 'cat-etc'
+}
+
 export default async function BoardPage({
   params,
   searchParams,
@@ -56,6 +76,7 @@ export default async function BoardPage({
   const { data: posts } = await postsQuery
 
   const isResource = board.layout_type === 'resource'
+  const totalCount = posts?.length ?? 0
 
   return (
     <div className="layout">
@@ -95,6 +116,7 @@ export default async function BoardPage({
         {posts && posts.length > 0 ? (
           <div className="list">
             <div className={board.uses_category ? 'list-header' : 'list-header no-cat'}>
+              <span className="col-num">번호</span>
               {board.uses_category && <span className="col-cat">분류</span>}
               <span className="col-title">제목</span>
               <span className="col-author">작성자</span>
@@ -103,18 +125,22 @@ export default async function BoardPage({
               <span className="col-like">♥</span>
             </div>
 
-            {posts.map((post) => {
+            {posts.map((post, index) => {
               const d = new Date(post.created_at)
               const dateStr = `${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
               const author = Array.isArray(post.profiles) ? post.profiles[0] : post.profiles
               const category = Array.isArray(post.categories) ? post.categories[0] : post.categories
               const hasAttachment = Array.isArray(post.post_attachments) && post.post_attachments.length > 0
+              const rowNum = totalCount - index
 
               return (
                 <div className={board.uses_category ? 'list-row' : 'list-row no-cat'} key={post.id}>
+                  <div className="col-num">{rowNum}</div>
                   {board.uses_category && (
                     <div className="col-cat">
-                      {category && <span className="cat-tag">{category.name}</span>}
+                      {category && (
+                        <span className={`cat-tag ${catClass(category.name)}`}>{category.name}</span>
+                      )}
                     </div>
                   )}
                   <div className="col-title">
