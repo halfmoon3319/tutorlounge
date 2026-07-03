@@ -40,12 +40,13 @@ export default function Header({ nickname }: { nickname: string | null }) {
           {nickname ? (
             <>
               <span className="login">{nickname}님</span>
-              <button className="btn-write" onClick={handleLogout}>로그아웃</button>
+              <Link href="/mypage" className="btn-write" style={{ textDecoration: 'none' }}>마이페이지</Link>
+              <button className="login" onClick={handleLogout} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>로그아웃</button>
             </>
           ) : (
             <>
               <Link href="/login" className="login">로그인</Link>
-              <button className="btn-write">글쓰기</button>
+              <Link href="/signup" className="btn-write" style={{ textDecoration: 'none' }}>회원가입</Link>
             </>
           )}
         </div>
