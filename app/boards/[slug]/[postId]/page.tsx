@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Comments from '../../../components/Comments'
 import LikeButton from '../../../components/LikeButton'
+import sanitizeHtml from 'sanitize-html'
 
 export default async function PostDetailPage({
   params,
@@ -47,6 +48,19 @@ export default async function PostDetailPage({
   const date = new Date(post.created_at)
   const dateStr = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`
 
+  // 본문 HTML을 안전하게 정화 (악성 태그 제거, 서식·이미지 태그는 허용)
+  const cleanBody = sanitizeHtml(post.body ?? '', {
+    allowedTags: [
+      'p', 'br', 'strong', 'em', 's', 'h2', 'h3',
+      'ul', 'ol', 'li', 'blockquote', 'a', 'img',
+    ],
+    allowedAttributes: {
+      a: ['href', 'target', 'rel'],
+      img: ['src', 'alt'],
+    },
+    allowedSchemes: ['http', 'https'],
+  })
+
   function formatFileSize(bytes: number) {
     if (bytes < 1024) return `${bytes}B`
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)}KB`
@@ -68,7 +82,10 @@ export default async function PostDetailPage({
             <span>조회 {post.view_count}</span>
           </div>
 
-          <div className="post-body">{post.body}</div>
+          <div
+            className="post-body tiptap-body"
+            dangerouslySetInnerHTML={{ __html: cleanBody }}
+          />
 
           {attachments && attachments.length > 0 && (
             <div className="attachment-box">

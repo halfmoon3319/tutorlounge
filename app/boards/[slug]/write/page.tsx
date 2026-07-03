@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { createClient } from '../../../../lib/supabase-browser'
 import Sidebar from '../../../components/Sidebar'
+import Editor from '../../../components/Editor'
 
 type Category = { id: number; name: string }
 
@@ -20,6 +21,16 @@ type BoardGroup = {
   name: string
   sort_order: number
   boards: { id: number; slug: string; name: string; sort_order: number }[]
+}
+
+// Tiptap이 빈 내용일 때 반환하는 값들 (실제 내용 없음으로 취급)
+function isEmptyHtml(html: string) {
+  const stripped = html
+    .replace(/<p>\s*<\/p>/g, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, '')
+    .trim()
+  return stripped.length === 0
 }
 
 export default function WritePage() {
@@ -93,7 +104,7 @@ export default function WritePage() {
   async function handleSubmit() {
     setError('')
 
-    if (!title.trim() || !body.trim()) {
+    if (!title.trim() || isEmptyHtml(body)) {
       setError('제목과 내용을 모두 입력해주세요.')
       return
     }
@@ -123,7 +134,7 @@ export default function WritePage() {
         author_id: user.id,
         category_id: categoryId,
         title: title.trim(),
-        body: body.trim(),
+        body: body,
       })
       .select('id')
       .single()
@@ -216,12 +227,8 @@ export default function WritePage() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <textarea
-            className="input-field write-body"
-            placeholder="내용을 입력하세요"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-          />
+
+          <Editor content={body} onChange={setBody} />
 
           {board?.allows_files && (
             <div className="file-attach">

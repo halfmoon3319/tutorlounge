@@ -575,3 +575,47 @@ body {
 @media (max-width: 640px) {
   .col-num { display: none; }
 }
+
+/* ===== Tiptap 에디터 ===== */
+.tiptap-wrap {
+  border: 0.5px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+.tiptap-toolbar {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 3px;
+  padding: 8px 10px;
+  border-bottom: 0.5px solid var(--line);
+  background: var(--surface);
+}
+.tiptap-toolbar button.tb-btn {
+  min-width: 32px; height: 30px; padding: 0 9px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #fff; border: 0.5px solid var(--line); border-radius: 7px;
+  font-size: 13px; color: var(--muted); cursor: pointer;
+  font-family: inherit;
+}
+.tiptap-toolbar button.tb-btn:hover { border-color: var(--coral-border); color: var(--ink); }
+.tiptap-toolbar button.tb-btn.active {
+  background: var(--coral-soft); color: var(--coral-text);
+  border-color: var(--coral-border); font-weight: bold;
+}
+.tb-divider {
+  width: 1px; height: 18px; background: var(--line); margin: 0 4px;
+}
+.tiptap-body {
+  min-height: 320px; padding: 16px 18px;
+  font-size: 14.5px; line-height: 1.7; color: var(--ink);
+  outline: none;
+}
+.tiptap-body p { margin: 0 0 10px; }
+.tiptap-body h2 { font-size: 20px; font-weight: bold; margin: 18px 0 10px; }
+.tiptap-body h3 { font-size: 17px; font-weight: bold; margin: 14px 0 8px; }
+.tiptap-body ul { padding-left: 22px; list-style: disc; margin: 0 0 10px; }
+.tiptap-body ol { padding-left: 22px; list-style: decimal; margin: 0 0 10px; }
+.tiptap-body blockquote {
+  border-left: 3px solid var(--coral-border);
+  padding-left: 14px; margin: 0 0 10px; color: var(--muted);
+}
+.tiptap-body:focus { outline: none; }
