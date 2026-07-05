@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { createClient } from '../../../../lib/supabase-browser'
 import Sidebar from '../../../components/Sidebar'
 import Editor from '../../../components/Editor'
+import { navGuard } from '../../../components/navigationGuard'
 
 type Category = { id: number; name: string }
 
@@ -108,6 +109,13 @@ export default function WritePage() {
     }
     window.addEventListener('beforeunload', handleBeforeUnload)
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [hasContent, loading])
+  // 사이드바 등 내부 이동 가드용 신호 업데이트
+  useEffect(() => {
+    navGuard.isDirty = hasContent && !loading
+    return () => {
+      navGuard.isDirty = false
+    }
   }, [hasContent, loading])
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files?.[0]

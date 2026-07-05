@@ -3,12 +3,31 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '../../lib/supabase-browser'
+import { navGuard } from './navigationGuard'
 
 export default function Header({ nickname }: { nickname: string | null }) {
   const router = useRouter()
   const supabase = createClient()
 
+  // 글쓰기 중이면 확인창 (링크 이동 가드)
+  function handleNavigate(e: { preventDefault: () => void }) {
+    if (navGuard.isDirty) {
+      const ok = window.confirm('작성 중인 글이 저장되지 않았습니다. 정말 나가시겠어요?')
+      if (!ok) {
+        e.preventDefault()
+      } else {
+        navGuard.isDirty = false
+      }
+    }
+  }
+
   async function handleLogout() {
+    // 글쓰기 중이면 로그아웃도 확인
+    if (navGuard.isDirty) {
+      const ok = window.confirm('작성 중인 글이 저장되지 않았습니다. 정말 나가시겠어요?')
+      if (!ok) return
+      navGuard.isDirty = false
+    }
     await supabase.auth.signOut()
     router.push('/')
     router.refresh()
@@ -17,7 +36,7 @@ export default function Header({ nickname }: { nickname: string | null }) {
   return (
     <header className="header">
       <div className="header-inner">
-        <Link href="/" className="logo">
+        <Link href="/" className="logo" onNavigate={handleNavigate}>
           <span className="logo-mark">
             <svg width="30" height="30" viewBox="0 0 46 46">
               <g fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round">
@@ -40,13 +59,13 @@ export default function Header({ nickname }: { nickname: string | null }) {
           {nickname ? (
             <>
               <span className="login">{nickname}님</span>
-              <Link href="/mypage" className="btn-write" style={{ textDecoration: 'none' }}>마이페이지</Link>
+              <Link href="/mypage" className="btn-write" style={{ textDecoration: 'none' }} onNavigate={handleNavigate}>마이페이지</Link>
               <button className="login" onClick={handleLogout} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>로그아웃</button>
             </>
           ) : (
             <>
-              <Link href="/login" className="login">로그인</Link>
-              <Link href="/signup" className="btn-write" style={{ textDecoration: 'none' }}>회원가입</Link>
+              <Link href="/login" className="login" onNavigate={handleNavigate}>로그인</Link>
+              <Link href="/signup" className="btn-write" style={{ textDecoration: 'none' }} onNavigate={handleNavigate}>회원가입</Link>
             </>
           )}
         </div>
