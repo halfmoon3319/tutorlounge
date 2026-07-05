@@ -683,3 +683,98 @@ body {
 
 /* 상세 페이지 이미지: 부모 문단 정렬을 따름 */
 .post-body img { display: block; margin-left: auto; margin-right: auto; }
+
+/* 글 수정/삭제 버튼 */
+.post-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+.post-action-btn {
+  font-size: 12.5px;
+  color: var(--muted);
+  background: #fff;
+  border: 0.5px solid var(--line);
+  border-radius: 7px;
+  padding: 5px 12px;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: inherit;
+}
+.post-action-btn:hover {
+  border-color: var(--coral-border);
+  color: var(--coral-text);
+}
+.nav-active { text-decoration: none; }
+
+/* 메인 페이지 글 목록 */
+.home-list {
+  background: #fff;
+  border: 0.5px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.home-post {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 0.5px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.12s;
+}
+.home-post:last-child { border-bottom: none; }
+.home-post:hover { background: var(--coral-soft); }
+.home-post-board {
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--coral-text);
+  background: var(--coral-soft);
+  border-radius: 5px;
+  padding: 2px 8px;
+  flex-shrink: 0;
+}
+.home-post-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.home-post-meta {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--hint);
+}
+.home-like { color: var(--coral); font-weight: bold; }
+
+/* 인기글 순위 번호 */
+.popular-rank {
+  flex-shrink: 0;
+  width: 22px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--coral);
+}
+.section-more { text-decoration: none; }
+
+/* 사이드바 상단 (인기/최신) */
+.nav-top {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 0.5px solid var(--line);
+}
+
+.hero-btn, .hero-btn:hover, .hero-btn:link, .hero-btn:visited {
+  text-decoration: none !important;
+}

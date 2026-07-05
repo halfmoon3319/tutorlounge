@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Comments from '../../../components/Comments'
 import LikeButton from '../../../components/LikeButton'
+import PostActions from '../../../components/PostActions'
 import sanitizeHtml from 'sanitize-html'
 
 export default async function PostDetailPage({
@@ -89,6 +90,13 @@ export default async function PostDetailPage({
             <span className="author">{nickname}</span>
             <span>{dateStr}</span>
             <span>조회 {post.view_count}</span>
+            <PostActions
+              postId={post.id}
+              slug={slug}
+              authorId={post.author_id}
+              body={post.body ?? ''}
+              attachments={attachments ?? []}
+            />
           </div>
 
           <div

@@ -32,10 +32,22 @@ export default function Sidebar({ groups }: { groups: Group[] }) {
 
   return (
     <aside className="sidebar">
-      <Link href="/" className="nav-active" onNavigate={handleNavigate}>
-        <span>🔥</span>
-        <span>전체 인기글</span>
-      </Link>
+      <div className="nav-top">
+        <Link
+          href="/popular"
+          className={pathname === '/popular' ? 'nav-item active' : 'nav-item'}
+          onNavigate={handleNavigate}
+        >
+          <span className="left"><span>🔥</span> 인기 게시글</span>
+        </Link>
+        <Link
+          href="/latest"
+          className={pathname === '/latest' ? 'nav-item active' : 'nav-item'}
+          onNavigate={handleNavigate}
+        >
+          <span className="left"><span>🕐</span> 최신 게시글</span>
+        </Link>
+      </div>
 
       {groups.map((group) => (
         <div className="nav-section" key={group.id}>
