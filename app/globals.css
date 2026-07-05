@@ -680,3 +680,6 @@ body {
   color: var(--coral-text);
   font-weight: bold;
 }
+
+/* 상세 페이지 이미지: 부모 문단 정렬을 따름 */
+.post-body img { display: block; margin-left: auto; margin-right: auto; }

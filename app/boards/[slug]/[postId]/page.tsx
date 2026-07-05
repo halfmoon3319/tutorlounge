@@ -56,11 +56,20 @@ export default async function PostDetailPage({
     ],
     allowedAttributes: {
       a: ['href', 'target', 'rel'],
-      img: ['src', 'alt'],
+      img: ['src', 'alt', 'style', 'width', 'height', 'data-align'],
+      p: ['style'],
+      h2: ['style'],
+      h3: ['style'],
+    },
+    allowedStyles: {
+      '*': {
+        'text-align': [/^(left|center|right)$/],
+        'width': [/^\d+(\.\d+)?px$/],
+        'height': [/^\d+(\.\d+)?px$/],
+      },
     },
     allowedSchemes: ['http', 'https'],
   })
-
   function formatFileSize(bytes: number) {
     if (bytes < 1024) return `${bytes}B`
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)}KB`
