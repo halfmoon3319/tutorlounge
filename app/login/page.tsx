@@ -55,6 +55,7 @@ export default function LoginPage() {
             placeholder="이메일 주소"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') handleLogin() }}
           />
           <input
             className="input-field"
@@ -62,6 +63,7 @@ export default function LoginPage() {
             placeholder="비밀번호"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') handleLogin() }}
           />
           <button className="btn-primary" onClick={handleLogin} disabled={loading}>
             {loading ? '로그인 중…' : '로그인'}

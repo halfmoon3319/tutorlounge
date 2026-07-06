@@ -1190,3 +1190,29 @@ body {
 
 .user-note-btn { text-decoration: none; }
 
+/* 헤더 쪽지함 링크 */
+.header-msg-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 4px 6px;
+}
+.header-msg-link:hover { color: var(--coral-text); }
+.header-msg-badge {
+  background: var(--coral);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: bold;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  margin-left: 1px;
+}

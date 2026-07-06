@@ -2,12 +2,30 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import { createClient } from '../../lib/supabase-browser'
 import { navGuard } from './navigationGuard'
 
 export default function Header({ nickname }: { nickname: string | null }) {
   const router = useRouter()
   const supabase = createClient()
+  const [unreadCount, setUnreadCount] = useState(0)
+
+  useEffect(() => {
+    if (!nickname) return
+    async function fetchUnread() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      const { count } = await supabase
+        .from('notes')
+        .select('id', { count: 'exact', head: true })
+        .eq('receiver_id', user.id)
+        .eq('is_read', false)
+        .eq('receiver_deleted', false)
+      setUnreadCount(count ?? 0)
+    }
+    fetchUnread()
+  }, [nickname, supabase])
 
   // 글쓰기 중이면 확인창 (링크 이동 가드)
   function handleNavigate(e: { preventDefault: () => void }) {
@@ -59,6 +77,10 @@ export default function Header({ nickname }: { nickname: string | null }) {
           {nickname ? (
             <>
               <span className="login">{nickname}님</span>
+              <Link href="/messages" className="header-msg-link" onNavigate={handleNavigate}>
+                ✉️ 쪽지
+                {unreadCount > 0 && <span className="header-msg-badge">{unreadCount}</span>}
+              </Link>
               <Link href="/mypage" className="btn-write" style={{ textDecoration: 'none' }} onNavigate={handleNavigate}>마이페이지</Link>
               <button className="login" onClick={handleLogout} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>로그아웃</button>
             </>
