@@ -11,6 +11,7 @@ export default function Header({ nickname }: { nickname: string | null }) {
   const supabase = createClient()
   const [unreadCount, setUnreadCount] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     if (!nickname) return
@@ -38,18 +39,26 @@ export default function Header({ nickname }: { nickname: string | null }) {
         navGuard.isDirty = false
       }
     }
+    setMenuOpen(false)
   }
 
   async function handleLogout() {
-    // 글쓰기 중이면 로그아웃도 확인
     if (navGuard.isDirty) {
       const ok = window.confirm('작성 중인 글이 저장되지 않았습니다. 정말 나가시겠어요?')
       if (!ok) return
       navGuard.isDirty = false
     }
+    setMenuOpen(false)
     await supabase.auth.signOut()
     router.push('/')
     router.refresh()
+  }
+
+  function runSearch() {
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      setMenuOpen(false)
+    }
   }
 
   return (
@@ -76,24 +85,12 @@ export default function Header({ nickname }: { nickname: string | null }) {
             placeholder="강의 꿀팁, 단가 정보 검색…"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && searchQuery.trim()) {
-                router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
-              }
-            }}
+            onKeyDown={(e) => { if (e.key === 'Enter') runSearch() }}
           />
-          <button
-            className="search-btn"
-            onClick={() => {
-              if (searchQuery.trim()) {
-                router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
-              }
-            }}
-          >
-            🔍
-          </button>
+          <button className="search-btn" onClick={runSearch}>🔍</button>
         </div>
 
+        {/* 데스크톱 메뉴 */}
         <div className="header-actions">
           {nickname ? (
             <>
@@ -112,7 +109,34 @@ export default function Header({ nickname }: { nickname: string | null }) {
             </>
           )}
         </div>
+
+        {/* 모바일 햄버거 버튼 */}
+        <button className="hamburger-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="메뉴">
+          {menuOpen ? '✕' : '☰'}
+        </button>
       </div>
+
+      {/* 모바일 드롭다운 메뉴 */}
+      {menuOpen && (
+        <div className="mobile-menu">
+          {nickname ? (
+            <>
+              <div className="mobile-menu-user">{nickname}님</div>
+              <Link href="/messages" className="mobile-menu-item" onNavigate={handleNavigate}>
+                ✉️ 쪽지함
+                {unreadCount > 0 && <span className="header-msg-badge">{unreadCount}</span>}
+              </Link>
+              <Link href="/mypage" className="mobile-menu-item" onNavigate={handleNavigate}>마이페이지</Link>
+              <button className="mobile-menu-item logout" onClick={handleLogout}>로그아웃</button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="mobile-menu-item" onNavigate={handleNavigate}>로그인</Link>
+              <Link href="/signup" className="mobile-menu-item" onNavigate={handleNavigate}>회원가입</Link>
+            </>
+          )}
+        </div>
+      )}
     </header>
   )
 }

@@ -1241,3 +1241,55 @@ body {
   flex-shrink: 0;
 }
 .search-btn:hover { background: var(--coral-soft); }
+
+/* 햄버거 버튼 (기본: 숨김, 모바일에서만 표시) */
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 4px 8px;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+/* 모바일 드롭다운 메뉴 */
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  border-top: 0.5px solid var(--line);
+  background: #fff;
+  padding: 8px 16px 12px;
+}
+.mobile-menu-user {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--coral-text);
+  padding: 10px 4px 6px;
+}
+.mobile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 4px;
+  font-size: 15px;
+  color: var(--ink);
+  text-decoration: none;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  border-bottom: 0.5px solid var(--surface);
+}
+.mobile-menu-item.logout { color: var(--muted); }
+
+/* 모바일 전환: 768px 이하 */
+@media (max-width: 768px) {
+  .header-actions { display: none; }
+  .hamburger-btn { display: block; }
+  .mobile-menu { display: flex; }
+  .logo-text { font-size: 16px; }
+  .search { max-width: 160px; }
+}
