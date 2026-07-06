@@ -778,3 +778,112 @@ body {
 .hero-btn, .hero-btn:hover, .hero-btn:link, .hero-btn:visited {
   text-decoration: none !important;
 }
+
+/* 회원가입 상세 폼 */
+.signup-card { max-width: 440px; }
+/* 회원가입 - 약관 동의 */
+.consent-box {
+  border: 0.5px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-bottom: 20px;
+  background: #fff;
+}
+.consent-all {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 2px;
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--ink);
+  cursor: pointer;
+}
+.consent-divider {
+  height: 0.5px;
+  background: var(--line);
+  margin: 2px 0 6px;
+}
+.consent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 2px;
+}
+.consent-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--muted);
+  cursor: pointer;
+  flex: 1;
+}
+.consent-req { color: var(--coral); font-weight: bold; }
+.consent-opt { color: var(--hint); font-weight: bold; }
+.consent-toggle {
+  background: none;
+  border: none;
+  color: var(--hint);
+  font-size: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 4px;
+  font-family: inherit;
+}
+.consent-toggle:hover { color: var(--coral-text); }
+.consent-text {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  max-height: 160px;
+  overflow-y: auto;
+  padding: 12px 14px;
+  margin: 0 0 8px;
+  background: var(--surface);
+  border: 0.5px solid var(--line);
+  border-radius: 8px;
+}
+.form-section-label {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--hint);
+  margin-top: 8px;
+  padding-left: 2px;
+}
+.address-row {
+  display: flex;
+  gap: 8px;
+}
+.address-row .input-field { flex: 1; }
+.address-search-btn {
+  flex-shrink: 0;
+  padding: 0 16px;
+  background: var(--coral-soft);
+  color: var(--coral-text);
+  border: 0.5px solid var(--coral-border);
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.address-search-btn:hover { background: var(--coral-border); }
+.input-field[readonly] { background: var(--surface); color: var(--muted); }
+
+/* 닉네임 중복확인 메시지 */
+.input-hint.ok { color: #1E7E34; }
+.input-hint.warn { color: #C0392B; }
+
+/* 닉네임 중복확인 메시지 위치 고정 */
+.input-wrap { width: 100%; }
+.input-wrap .address-row { width: 100%; }
+.input-wrap .input-hint,
+.input-wrap .input-hint.ok,
+.input-wrap .input-hint.warn {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+}
