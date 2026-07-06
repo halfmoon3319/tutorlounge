@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '../../lib/supabase-browser'
+import SendNoteButton from './SendNoteButton'
 
 type Comment = {
   id: number
@@ -140,7 +141,9 @@ export default function Comments({ postId }: { postId: number }) {
       <div className={isReply ? 'comment-item comment-reply' : 'comment-item'} key={c.id}>
         <div className="comment-meta">
           {isReply && <span className="reply-arrow">↳</span>}
-          <span className="comment-author">{author?.nickname ?? '익명'}</span>
+          <span className="comment-author">
+            <SendNoteButton targetId={c.author_id} targetName={author?.nickname ?? '익명'} />
+          </span>
           <span className="comment-date">{formatDate(c.created_at)}</span>
           {!isReply && userId && (
             <button className="comment-reply-btn" onClick={() => setReplyTo(replyTo === c.id ? null : c.id)}>

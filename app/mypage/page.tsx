@@ -73,10 +73,34 @@ export default async function MyPage() {
 
   return (
     <div className="layout-narrow">
-      <div className="mypage-profile">
-        <div className="mypage-nickname">{profile?.nickname ?? '이름 없음'}</div>
-        <div className="mypage-sub">
-          {profile?.field ? `${profile.field} · ` : ''}가입 {joinDate}
+      <div className="user-profile-card">
+        <div className="user-profile-top">
+          <div>
+            <div className="user-profile-nickname">{profile?.nickname ?? '이름 없음'}</div>
+            <div className="user-profile-sub">가입 {joinDate}</div>
+          </div>
+          <a href={`/users/${user.id}`} className="user-note-btn">내 공개 프로필 보기</a>
+        </div>
+
+        <div className="user-profile-bio">
+          {profile?.bio ? profile.bio : <span className="profile-empty-text">아직 자기소개가 없어요.</span>}
+        </div>
+
+        <div className="user-profile-meta">
+          <span className="user-meta-item">
+            {profile?.field ? profile.field : '분야 미설정'}
+          </span>
+          <span className="user-meta-item">
+            {profile?.career_years !== null && profile?.career_years !== undefined ? `경력 ${profile.career_years}년` : '경력 미설정'}
+          </span>
+          <span className="user-meta-item">
+            📍 {profile?.region ? profile.region : '지역 미설정'}
+          </span>
+          {profile?.link_url && (
+            <a href={profile.link_url} target="_blank" rel="noopener noreferrer" className="user-meta-link">
+              🔗 링크
+            </a>
+          )}
         </div>
       </div>
 

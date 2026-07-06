@@ -6,6 +6,7 @@ import Comments from '../../../components/Comments'
 import LikeButton from '../../../components/LikeButton'
 import PostActions from '../../../components/PostActions'
 import sanitizeHtml from 'sanitize-html'
+import SendNoteButton from '../../../components/SendNoteButton'
 
 export default async function PostDetailPage({
   params,
@@ -87,7 +88,9 @@ export default async function PostDetailPage({
           <h1 className="post-title">{post.title}</h1>
 
           <div className="post-meta">
-            <span className="author">{nickname}</span>
+            <span className="author">
+              <SendNoteButton targetId={post.author_id} targetName={nickname} />
+            </span>
             <span>{dateStr}</span>
             <span>조회 {post.view_count}</span>
             <PostActions
