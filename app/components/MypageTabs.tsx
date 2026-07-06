@@ -71,6 +71,55 @@ export default function MypageTabs({
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
 
+  // 프로필 수정 비밀번호 확인 관문
+  const [unlocked, setUnlocked] = useState(false)
+  const [gatePassword, setGatePassword] = useState('')
+  const [gateError, setGateError] = useState('')
+  const [gateChecking, setGateChecking] = useState(false)
+
+  // 프로필 수정 탭 진입 (매번 잠금 초기화)
+  function openSettings() {
+    setTab('settings')
+    setUnlocked(false)
+    setGatePassword('')
+    setGateError('')
+    setMessage('')
+  }
+
+  async function handleUnlock(e: React.FormEvent) {
+    e.preventDefault()
+    setGateError('')
+    if (!gatePassword) {
+      setGateError('비밀번호를 입력해주세요.')
+      return
+    }
+    setGateChecking(true)
+
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user?.email) {
+      setGateError('사용자 정보를 확인할 수 없어요. 다시 로그인해주세요.')
+      setGateChecking(false)
+      return
+    }
+
+    // 이메일 + 입력한 비밀번호로 재인증 시도
+    const { error } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: gatePassword,
+    })
+
+    setGateChecking(false)
+
+    if (error) {
+      setGateError('비밀번호가 일치하지 않아요.')
+      return
+    }
+
+    setUnlocked(true)
+    setGatePassword('')
+  }
+
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
 
@@ -140,7 +189,7 @@ export default function MypageTabs({
         </button>
         <button
           className={tab === 'settings' ? 'mytab active' : 'mytab'}
-          onClick={() => setTab('settings')}
+          onClick={openSettings}
         >
           프로필 수정
         </button>
@@ -237,7 +286,27 @@ export default function MypageTabs({
           )
         )}
 
-        {tab === 'settings' && (
+        {/* 프로필 수정 - 비밀번호 확인 관문 */}
+        {tab === 'settings' && !unlocked && (
+          <form className="profile-gate" onSubmit={handleUnlock}>
+            <div className="gate-title">🔒 본인 확인</div>
+            <div className="gate-desc">프로필 수정을 위해 비밀번호를 다시 입력해주세요.</div>
+            <input
+              type="password"
+              className="input-field"
+              placeholder="비밀번호"
+              value={gatePassword}
+              onChange={(e) => setGatePassword(e.target.value)}
+            />
+            {gateError && <div className="auth-msg error">{gateError}</div>}
+            <button type="submit" className="profile-edit-submit" disabled={gateChecking}>
+              {gateChecking ? '확인 중…' : '확인'}
+            </button>
+          </form>
+        )}
+
+        {/* 프로필 수정 - 폼 (관문 통과 후) */}
+        {tab === 'settings' && unlocked && (
           <form className="profile-edit-form" onSubmit={handleSave}>
             <div className="form-field">
               <label htmlFor="nickname">닉네임</label>
