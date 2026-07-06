@@ -10,6 +10,7 @@ export default function Header({ nickname }: { nickname: string | null }) {
   const router = useRouter()
   const supabase = createClient()
   const [unreadCount, setUnreadCount] = useState(0)
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     if (!nickname) return
@@ -69,8 +70,28 @@ export default function Header({ nickname }: { nickname: string | null }) {
         </Link>
 
         <div className="search">
-          <span>🔍</span>
-          <span>강의 꿀팁, 단가 정보 검색…</span>
+          <input
+            className="search-input"
+            type="text"
+            placeholder="강의 꿀팁, 단가 정보 검색…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && searchQuery.trim()) {
+                router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+              }
+            }}
+          />
+          <button
+            className="search-btn"
+            onClick={() => {
+              if (searchQuery.trim()) {
+                router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+              }
+            }}
+          >
+            🔍
+          </button>
         </div>
 
         <div className="header-actions">

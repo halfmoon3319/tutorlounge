@@ -1216,3 +1216,28 @@ body {
   padding: 0 4px;
   margin-left: 1px;
 }
+
+/* 헤더 검색 입력창 */
+.search-input {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--ink);
+  width: 100%;
+}
+.search-input::placeholder { color: var(--hint); }
+
+/* 헤더 검색 버튼 */
+.search { display: flex; align-items: center; gap: 8px; }
+.search-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.search-btn:hover { background: var(--coral-soft); }
