@@ -192,19 +192,14 @@ export default function SignupPage() {
       return
     }
 
-    const userId = signupData.user?.id
+   const userId = signupData.user?.id
 
-    // 2) profiles에 상세정보 저장
+    // 2) profiles에 공개 정보 저장
     if (userId) {
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
           nickname: nickname.trim(),
-          real_name: realName.trim(),
-          phone: phone || null,
-          zip_code: zipCode || null,
-          address: address || null,
-          address_detail: addressDetail || null,
           career_years: careerYears ? Number(careerYears) : null,
           region: region || null,
         })
@@ -212,6 +207,22 @@ export default function SignupPage() {
 
       if (profileError) {
         console.error('프로필 저장 실패:', profileError)
+      }
+
+      // 3) profiles_private에 민감 정보 저장
+      const { error: privateError } = await supabase
+        .from('profiles_private')
+        .upsert({
+          id: userId,
+          real_name: realName.trim(),
+          phone: phone || null,
+          zip_code: zipCode || null,
+          address: address || null,
+          address_detail: addressDetail || null,
+        })
+
+      if (privateError) {
+        console.error('민감정보 저장 실패:', privateError)
       }
     }
 

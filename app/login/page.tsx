@@ -1,13 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '../../lib/supabase-browser'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const supabase = createClient()
+
+  const nextUrl = searchParams.get('next')
+  const reason = searchParams.get('reason')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -36,7 +40,7 @@ export default function LoginPage() {
       return
     }
 
-    router.push('/')
+    router.push(nextUrl || '/')
     router.refresh()
   }
 
@@ -47,6 +51,12 @@ export default function LoginPage() {
           <div className="auth-title">다시 오셨네요 👋</div>
           <div className="auth-sub">강사·교육 종사자의 라운지에 로그인하세요.</div>
         </div>
+
+        {reason === 'material' && (
+          <div className="auth-notice">
+            자료 게시판의 글은 로그인 후 열람하실 수 있어요.
+          </div>
+        )}
 
         <div className="email-form">
           <input

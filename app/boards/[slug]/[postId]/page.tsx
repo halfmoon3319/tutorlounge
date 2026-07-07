@@ -1,6 +1,6 @@
 import { createClient } from '../../../../lib/supabase-server'
 import Sidebar from '../../../components/Sidebar'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import Comments from '../../../components/Comments'
 import LikeButton from '../../../components/LikeButton'
@@ -24,7 +24,7 @@ export default async function PostDetailPage({
 
   const { data: post } = await supabase
     .from('posts')
-    .select('id, title, body, view_count, like_count, comment_count, created_at, author_id, profiles(nickname)')
+    .select('id, title, body, view_count, like_count, comment_count, created_at, author_id, board_id, profiles(nickname)')
     .eq('id', postId)
     .eq('status', 'published')
     .single()
@@ -33,16 +33,27 @@ export default async function PostDetailPage({
     notFound()
   }
 
+  // 자료 게시판(group_id=2) 글은 로그인해야 상세 열람 가능
+  const { data: board } = await supabase
+    .from('boards')
+    .select('group_id')
+    .eq('id', post.board_id)
+    .single()
+
+  if (board?.group_id === 2) {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      redirect(`/login?next=/boards/${slug}/${postId}&reason=material`)
+    }
+  }
+
   const { data: attachments } = await supabase
     .from('post_attachments')
     .select('id, file_url, file_name, file_size, is_image, download_count')
     .eq('post_id', post.id)
     .order('created_at')
 
-  await supabase
-    .from('posts')
-    .update({ view_count: post.view_count + 1 })
-    .eq('id', post.id)
+  await supabase.rpc('increment_view_count', { post_id_input: post.id })
 
   const author = Array.isArray(post.profiles) ? post.profiles[0] : post.profiles
   const nickname = author?.nickname ?? '알 수 없음'
