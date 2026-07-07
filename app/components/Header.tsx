@@ -6,12 +6,16 @@ import { useState, useEffect } from 'react'
 import { createClient } from '../../lib/supabase-browser'
 import { navGuard } from './navigationGuard'
 
+type Board = { id: number; slug: string; name: string }
+type Group = { id: number; name: string; boards: Board[] }
+
 export default function Header({ nickname }: { nickname: string | null }) {
   const router = useRouter()
   const supabase = createClient()
   const [unreadCount, setUnreadCount] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
+  const [groups, setGroups] = useState<Group[]>([])
 
   useEffect(() => {
     if (!nickname) return
@@ -29,7 +33,19 @@ export default function Header({ nickname }: { nickname: string | null }) {
     fetchUnread()
   }, [nickname, supabase])
 
-  // 글쓰기 중이면 확인창 (링크 이동 가드)
+  // 햄버거 메뉴용 게시판 목록 조회
+  useEffect(() => {
+    async function fetchGroups() {
+      const { data } = await supabase
+        .from('board_groups')
+        .select('id, name, sort_order, boards(id, slug, name, sort_order)')
+        .order('sort_order')
+        .order('sort_order', { referencedTable: 'boards' })
+      setGroups((data as Group[]) ?? [])
+    }
+    fetchGroups()
+  }, [supabase])
+
   function handleNavigate(e: { preventDefault: () => void }) {
     if (navGuard.isDirty) {
       const ok = window.confirm('작성 중인 글이 저장되지 않았습니다. 정말 나가시겠어요?')
@@ -119,6 +135,7 @@ export default function Header({ nickname }: { nickname: string | null }) {
       {/* 모바일 드롭다운 메뉴 */}
       {menuOpen && (
         <div className="mobile-menu">
+          {/* 계정 관련 */}
           {nickname ? (
             <>
               <div className="mobile-menu-user">{nickname}님</div>
@@ -135,6 +152,28 @@ export default function Header({ nickname }: { nickname: string | null }) {
               <Link href="/signup" className="mobile-menu-item" onNavigate={handleNavigate}>회원가입</Link>
             </>
           )}
+
+          {/* 인기/최신 */}
+          <div className="mobile-menu-section">바로가기</div>
+          <Link href="/popular" className="mobile-menu-board" onNavigate={handleNavigate}>🔥 인기 게시글</Link>
+          <Link href="/latest" className="mobile-menu-board" onNavigate={handleNavigate}>🕐 최신 게시글</Link>
+
+          {/* 게시판 그룹 */}
+          {groups.map((group) => (
+            <div key={group.id}>
+              <div className="mobile-menu-section">{group.name}</div>
+              {group.boards.map((board) => (
+                <Link
+                  key={board.id}
+                  href={`/boards/${board.slug}`}
+                  className="mobile-menu-board"
+                  onNavigate={handleNavigate}
+                >
+                  {board.name}
+                </Link>
+              ))}
+            </div>
+          ))}
         </div>
       )}
     </header>
