@@ -1317,45 +1317,79 @@ body {
 }
 .mobile-menu-board:hover { color: var(--coral-text); }
 
-/* ===== 모바일 레이아웃 최종 보정 (768px 이하) ===== */
+/* ============================================
+   모바일 최종 정리 (맨 끝 - 최우선)
+   ============================================ */
+.row-subline { display: none; }
+
 @media (max-width: 768px) {
-  /* 게시판 목록: 제목 | 작성자/날짜 2칸으로 단순화 */
-  .list-header {
-    display: none;
-  }
+  /* 레이아웃: 사이드바 숨기고 본문 전체 */
+  .layout { grid-template-columns: 1fr !important; padding: 16px !important; }
+  .sidebar { display: none !important; }
+
+  /* 게시판 목록 헤더 숨김 */
+  .list-header { display: none !important; }
+
+  /* 각 행: 번호 + 카테고리 + 제목 (윗줄) / 서브라인 (아랫줄) */
   .list-row, .list-row.no-cat {
-    display: flex !important;
-    flex-direction: column;
-    align-items: flex-start !important;
-    gap: 4px;
-    padding: 12px 4px;
+    display: grid !important;
+    grid-template-columns: auto auto 1fr !important;
+    grid-template-areas:
+      "num cat title"
+      "sub sub sub" !important;
+    gap: 6px 8px !important;
+    align-items: center !important;
+    padding: 14px 6px !important;
   }
-  .list-row > * {
-    width: auto;
+
+  /* 데스크톱용 칸 숨김 (번호·카테고리·제목은 유지) */
+  .list-row .col-author,
+  .list-row .col-date,
+  .list-row .col-dl,
+  .list-row .col-like { display: none !important; }
+
+  /* 번호 */
+  .list-row .col-num {
+    display: block !important;
+    grid-area: num !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    color: var(--coral) !important;
+    text-align: center !important;
+    min-width: 20px;
   }
+
+  /* 카테고리 칩 */
+  .list-row .col-cat { grid-area: cat !important; margin: 0 !important; }
+  .list-row.no-cat .col-cat { display: none !important; }
+
+  /* 제목 */
+  .list-row .col-title { grid-area: title !important; min-width: 0 !important; }
+  .list-row.no-cat .col-title { grid-column: title !important; }
   .row-title {
-    font-size: 14px;
-    white-space: normal;
-    word-break: break-all;
+    font-size: 14.5px !important;
+    white-space: normal !important;
+    display: block !important;
+    line-height: 1.4 !important;
+    text-align: left !important;
   }
-  .row-meta {
+
+  /* 서브라인 (닉네임·날짜·조회·추천) */
+  .row-subline {
+    grid-area: sub !important;
+    display: flex !important;
     flex-wrap: wrap;
-  }
-
-  /* 카테고리/작성자/조회수 등 부가 칸은 메타로 합쳐 보이게 */
-  .col-num, .col-cat, .col-views, .col-likes, .col-comments {
-    display: inline;
-    font-size: 11.5px;
+    gap: 5px;
+    font-size: 12px;
     color: var(--hint);
+    align-items: center;
   }
 
-  /* 마이페이지 탭: 줄바꿈 방지 + 크기 축소 */
-  .mypage-tabs {
-    gap: 0;
-  }
+  /* 마이페이지 탭 */
+  .mypage-tabs { gap: 0 !important; }
   .mypage-tabs button.mytab {
-    white-space: nowrap;
-    font-size: 13px;
-    padding: 10px 10px;
+    white-space: nowrap !important;
+    font-size: 13px !important;
+    padding: 10px 10px !important;
   }
 }

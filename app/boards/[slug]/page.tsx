@@ -169,7 +169,7 @@ export default async function BoardPage({
                     <span>·</span>
                     <span>{dateStr}</span>
                     <span>·</span>
-                    <span>{isResource ? `↓ ${post.download_count}` : `조회 ${post.view_count}`}</span>
+                    <span>조회 {post.view_count}</span>
                     {post.like_count > 0 && <><span>·</span><span>♥ {post.like_count}</span></>}
                   </div>
                 </div>
