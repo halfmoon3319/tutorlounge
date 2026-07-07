@@ -164,6 +164,14 @@ export default async function BoardPage({
                       : post.view_count}
                   </div>
                   <div className="col-like">{post.like_count > 0 ? <b>{post.like_count}</b> : '–'}</div>
+                  <div className="row-subline">
+                    <span>{author?.nickname ?? '익명'}</span>
+                    <span>·</span>
+                    <span>{dateStr}</span>
+                    <span>·</span>
+                    <span>{isResource ? `↓ ${post.download_count}` : `조회 ${post.view_count}`}</span>
+                    {post.like_count > 0 && <><span>·</span><span>♥ {post.like_count}</span></>}
+                  </div>
                 </div>
               )
             })}

@@ -213,6 +213,8 @@ body {
 
 /* 모바일에서 리스트 열 단순화 */
 @media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr !important; padding: 16px; }
+  .sidebar { display: none !important; }
   .list-header { display: none; }
   .list-row { grid-template-columns: 1fr auto; gap: 4px 10px; }
   .col-cat { display: none; }
@@ -1314,3 +1316,46 @@ body {
   text-decoration: none;
 }
 .mobile-menu-board:hover { color: var(--coral-text); }
+
+/* ===== 모바일 레이아웃 최종 보정 (768px 이하) ===== */
+@media (max-width: 768px) {
+  /* 게시판 목록: 제목 | 작성자/날짜 2칸으로 단순화 */
+  .list-header {
+    display: none;
+  }
+  .list-row, .list-row.no-cat {
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 4px;
+    padding: 12px 4px;
+  }
+  .list-row > * {
+    width: auto;
+  }
+  .row-title {
+    font-size: 14px;
+    white-space: normal;
+    word-break: break-all;
+  }
+  .row-meta {
+    flex-wrap: wrap;
+  }
+
+  /* 카테고리/작성자/조회수 등 부가 칸은 메타로 합쳐 보이게 */
+  .col-num, .col-cat, .col-views, .col-likes, .col-comments {
+    display: inline;
+    font-size: 11.5px;
+    color: var(--hint);
+  }
+
+  /* 마이페이지 탭: 줄바꿈 방지 + 크기 축소 */
+  .mypage-tabs {
+    gap: 0;
+  }
+  .mypage-tabs button.mytab {
+    white-space: nowrap;
+    font-size: 13px;
+    padding: 10px 10px;
+  }
+}
