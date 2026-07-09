@@ -144,17 +144,28 @@ export default function SignupPage() {
       errors.passwordConfirm = '비밀번호가 일치하지 않아요.'
     }
 
-    // 이름
+    // 이름 (필수)
     if (!realName.trim()) {
       errors.realName = '이름을 입력해주세요.'
     }
 
-    // 전화번호 (입력한 경우에만 형식 검사)
-    if (phone) {
+    // 전화번호 (필수)
+    if (!phone.trim()) {
+      errors.phone = '전화번호를 입력해주세요.'
+    } else {
       const phoneRegex = /^01[0-9]-?\d{3,4}-?\d{4}$/
       if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
         errors.phone = '올바른 전화번호 형식이 아니에요. (예: 010-1234-5678)'
       }
+    }
+
+    // 주소 (필수) — 우편번호·기본주소는 주소찾기로 채워짐
+    if (!zipCode || !address.trim()) {
+      errors.address = '주소를 검색해주세요.'
+    }
+    // 상세주소 (필수)
+    if (!addressDetail.trim()) {
+      errors.addressDetail = '상세 주소를 입력해주세요.'
     }
 
     setFieldErrors(errors)
@@ -329,7 +340,7 @@ export default function SignupPage() {
               <input
                 className="input-field"
                 type="tel"
-                placeholder="전화번호 (예: 010-1234-5678)"
+                placeholder="전화번호 * (예: 010-1234-5678)"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
@@ -337,33 +348,39 @@ export default function SignupPage() {
             </div>
 
             {/* 주소 */}
-            <div className="address-row">
+            <div className="input-wrap">
+              <div className="address-row">
+                <input
+                  className="input-field"
+                  type="text"
+                  placeholder="우편번호 *"
+                  value={zipCode}
+                  readOnly
+                />
+                <button type="button" className="address-search-btn" onClick={openAddressSearch}>
+                  주소 찾기
+                </button>
+              </div>
               <input
                 className="input-field"
                 type="text"
-                placeholder="우편번호"
-                value={zipCode}
+                placeholder="기본 주소 *"
+                value={address}
                 readOnly
               />
-              <button type="button" className="address-search-btn" onClick={openAddressSearch}>
-                주소 찾기
-              </button>
+              <input
+                id="address-detail"
+                className="input-field"
+                type="text"
+                placeholder="상세 주소 * (동·호수 등)"
+                value={addressDetail}
+                onChange={(e) => setAddressDetail(e.target.value)}
+              />
+              {fieldErrors.address && <span className="input-hint warn">{fieldErrors.address}</span>}
+              {!fieldErrors.address && fieldErrors.addressDetail && (
+                <span className="input-hint warn">{fieldErrors.addressDetail}</span>
+              )}
             </div>
-            <input
-              className="input-field"
-              type="text"
-              placeholder="기본 주소"
-              value={address}
-              readOnly
-            />
-            <input
-              id="address-detail"
-              className="input-field"
-              type="text"
-              placeholder="상세 주소 (동·호수 등)"
-              value={addressDetail}
-              onChange={(e) => setAddressDetail(e.target.value)}
-            />
 
             {/* 활동 정보 */}
             <div className="form-section-label">활동 정보</div>
@@ -377,7 +394,7 @@ export default function SignupPage() {
                 value={careerYears}
                 onChange={(e) => setCareerYears(e.target.value)}
               />
-              <span className="input-hint">강사·교육 경력을 햇수로 입력해주세요.</span>
+              <span className="input-hint">강사·교육 경력을 햇수로 입력해주세요. (선택)</span>
             </div>
             <input
               className="input-field"

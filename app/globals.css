@@ -1394,12 +1394,13 @@ body {
   }
 }
 .auth-notice {
-  background: #FDF0EB;
-  color: #E8693C;
-  border: 1px solid #F5C9B8;
-  border-radius: 8px;
-  padding: 12px 14px;
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 16px;
+  background: #FDF0EB !important;
+  color: #E8693C !important;
+  border: 1px solid #F5C9B8 !important;
+  border-radius: 8px !important;
+  padding: 12px 14px !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  text-align: center !important;
+  margin-bottom: 16px !important;
 }
