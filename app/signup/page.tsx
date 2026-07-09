@@ -198,7 +198,17 @@ export default function SignupPage() {
     })
 
     if (signupError) {
-      setError(signupError.message)
+      // Supabase 영어 메시지를 한글로 변환
+      const msg = signupError.message
+      if (msg.includes('already registered')) {
+        setError('이미 가입된 이메일이에요. 로그인을 시도해주세요.')
+      } else if (msg.includes('Password')) {
+        setError('비밀번호 조건을 다시 확인해주세요.')
+      } else if (msg.includes('invalid') || msg.includes('Invalid')) {
+        setError('입력한 이메일 형식을 다시 확인해주세요.')
+      } else {
+        setError('가입 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.')
+      }
       setLoading(false)
       return
     }
