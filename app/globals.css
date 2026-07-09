@@ -1404,3 +1404,46 @@ body {
   text-align: center !important;
   margin-bottom: 16px !important;
 }
+
+.find-result {
+  padding: 8px 0;
+}
+.find-result-label {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.find-result-email {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brand, #E8693C);
+  padding: 14px;
+  background: #faf6f4;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+.find-result-hint {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 12px 0 16px;
+}
+.btn-link-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  background: var(--brand, #E8693C);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 10px;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+.btn-link-primary:hover {
+  opacity: 0.92;
+}

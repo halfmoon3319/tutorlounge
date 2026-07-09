@@ -221,6 +221,7 @@ export default function SignupPage() {
         .from('profiles')
         .update({
           nickname: nickname.trim(),
+          email: email,
           career_years: careerYears ? Number(careerYears) : null,
           region: region || null,
         })

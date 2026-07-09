@@ -86,6 +86,11 @@ export default function LoginPage() {
           <span>아직 계정이 없으신가요?</span>
           <Link href="/signup">회원가입</Link>
         </div>
+        <div className="auth-links">
+          <Link href="/find-email">아이디 찾기</Link>
+          <span>·</span>
+          <Link href="/reset-password">비밀번호 찾기</Link>
+        </div>
       </div>
     </div>
   )
