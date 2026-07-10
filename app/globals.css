@@ -1447,3 +1447,44 @@ body {
 .btn-link-primary:hover {
   opacity: 0.92;
 }
+/* 페이지네이션 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin: 28px 0 12px;
+}
+.page-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fff;
+  color: #555;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.page-btn:hover {
+  border-color: #E8693C;
+  color: #E8693C;
+}
+.page-btn.active {
+  background: #E8693C;
+  border-color: #E8693C;
+  color: #fff;
+  font-weight: 700;
+}
+.page-arrow {
+  font-size: 18px;
+  line-height: 1;
+}
+.page-ellipsis {
+  padding: 0 4px;
+  color: #aaa;
+}
