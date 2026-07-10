@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import { createClient } from "../lib/supabase-server";
 import "./globals.css";
 
@@ -39,6 +40,7 @@ export default async function RootLayout({
       <body>
         <Header nickname={nickname} />
         {children}
+        <Footer />
       </body>
     </html>
   );

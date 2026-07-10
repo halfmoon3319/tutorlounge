@@ -14,7 +14,7 @@
   --hint: #9A9A9A;
   --line: #ECECEC;
   --surface: #F7F7F7;
-  --max-width: 1200px;
+  --max-width: 1320px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1487,4 +1487,230 @@ body {
 .page-ellipsis {
   padding: 0 4px;
   color: #aaa;
+}
+/* 사이트 푸터 */
+.site-footer {
+  margin-top: 80px;
+  background: #fafafa;
+  border-top: 1px solid #f0f0f0;
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 24px;
+}
+.footer-top {
+  margin-bottom: 10px;
+}
+.footer-brand {
+  font-size: 15px;
+  font-weight: 700;
+  color: #c9946f;
+  letter-spacing: -0.3px;
+}
+.footer-info p {
+  margin: 2px 0;
+  font-size: 11.5px;
+  color: #aaa;
+  line-height: 1.6;
+}
+.footer-info a {
+  color: #aaa;
+  text-decoration: underline;
+}
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #f0f0f0;
+}
+.footer-links {
+  display: flex;
+  gap: 16px;
+}
+.footer-links a {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #999;
+  text-decoration: none;
+}
+.footer-links a:hover {
+  color: #E8693C;
+}
+.footer-copy {
+  font-size: 11px;
+  color: #bbb;
+}
+
+/* 모바일 */
+@media (max-width: 640px) {
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .footer-links {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}
+/* 페이지를 화면 높이만큼 채워 푸터를 하단에 고정 */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.site-footer {
+  margin-top: auto;
+}
+/* 과목·자료 바로가기 */
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.quick-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 16px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid var(--line, #eee);
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.quick-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border-color: #E8693C;
+}
+.quick-emoji {
+  font-size: 24px;
+}
+.quick-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+.quick-sub {
+  font-size: 12px;
+  color: #E8693C;
+  font-weight: 600;
+}
+
+/* 게시판별 미리보기 */
+.board-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.board-preview {
+  background: #fff;
+  border: 1px solid var(--line, #eee);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.board-preview-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f2f2f2;
+}
+.board-preview-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+  text-decoration: none;
+}
+.board-preview-title:hover {
+  color: #E8693C;
+}
+.board-preview-more {
+  font-size: 18px;
+  color: #bbb;
+  text-decoration: none;
+  line-height: 1;
+}
+.board-preview-more:hover {
+  color: #E8693C;
+}
+.board-preview-list {
+  display: flex;
+  flex-direction: column;
+}
+.board-preview-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  text-decoration: none;
+  color: #555;
+  font-size: 13.5px;
+}
+.board-preview-item:hover .bp-title {
+  color: #E8693C;
+}
+.bp-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bp-date {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: #bbb;
+}
+.board-preview-empty {
+  font-size: 13px;
+  color: #bbb;
+  padding: 8px 0;
+}
+
+/* 모바일 */
+@media (max-width: 640px) {
+  .quick-links {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .board-preview-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* 최신·인기 가로 배치 */
+.home-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.home-row .section {
+  min-width: 0;
+}
+
+/* 모바일: 세로로 */
+@media (max-width: 640px) {
+  .home-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+/* 최신·인기 목록 제목 말줄임 */
+.home-post-title {
+  overflow: hidden;
+}
+.hpt-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.reply-cnt {
+  flex-shrink: 0;
 }
