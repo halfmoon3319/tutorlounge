@@ -1760,3 +1760,14 @@ body {
   align-items: center;
   gap: 2px;
 }
+/* 게시판 목록 제목 말줄임 */
+.list-row .col-title {
+  min-width: 0;
+  overflow: hidden;
+}
+.list-row .col-title .row-title {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
