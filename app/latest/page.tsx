@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { supabase } from '../../lib/supabaseClient'
 import Sidebar from '../components/Sidebar'
+import RoleBadge from '../components/RoleBadge'
 
 const PAGE_SIZE = 20
 
@@ -23,7 +24,7 @@ export default async function LatestPage({
   // 전체 글 수 (페이지 계산용) + 현재 페이지 글
   const { data: posts, count } = await supabase
     .from('posts')
-    .select('id, title, like_count, comment_count, created_at, boards(slug, name)', { count: 'exact' })
+    .select('id, title, like_count, comment_count, created_at, boards(slug, name), profiles(nickname, role)', { count: 'exact' })
     .eq('status', 'published')
     .order('created_at', { ascending: false })
     .range(from, to)
@@ -46,6 +47,8 @@ export default async function LatestPage({
             <div className="home-list">
               {posts.map((post) => {
                 const board = Array.isArray(post.boards) ? post.boards[0] : post.boards
+                const author = Array.isArray(post.profiles) ? post.profiles[0] : post.profiles
+                const role = (author as { role?: string })?.role
                 const d = new Date(post.created_at)
                 const dateStr = `${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
                 return (
@@ -56,12 +59,16 @@ export default async function LatestPage({
                   >
                     <span className="home-post-board">{board?.name}</span>
                     <span className="home-post-title">
-                      {post.title}
+                      <span className="hpt-text">{post.title}</span>
                       {post.comment_count > 0 && (
                         <span className="reply-cnt">[{post.comment_count}]</span>
                       )}
                     </span>
                     <span className="home-post-meta">
+                      <span className={`home-post-author ${role === 'admin' ? 'is-admin' : role === 'official' ? 'is-official' : ''}`}>
+                        <RoleBadge role={role} />
+                        {author?.nickname ?? '익명'}
+                      </span>
                       {post.like_count > 0 && <span className="home-like">♥ {post.like_count}</span>}
                       <span>{dateStr}</span>
                     </span>

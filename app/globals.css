@@ -1607,7 +1607,7 @@ body {
 /* 게시판별 미리보기 */
 .board-preview-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
 }
 .board-preview {
@@ -1655,11 +1655,11 @@ body {
   text-decoration: none;
   color: #555;
   font-size: 13.5px;
-}
-.board-preview-item:hover .bp-title {
-  color: #E8693C;
+  min-width: 0;
 }
 .bp-title {
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1771,3 +1771,17 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* 메인 목록 작성자 */
+.home-post-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--muted, #999);
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.home-post-author.is-admin { color: #E8693C; font-weight: 700; }
+.home-post-author.is-official { color: #2f6f5e; font-weight: 700; }

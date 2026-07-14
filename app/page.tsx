@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { supabase } from '../lib/supabaseClient'
 import Sidebar from './components/Sidebar'
+import RoleBadge from './components/RoleBadge'
 
 // 과목·자료 바로가기 카드 (자료 게시판)
 const QUICK_LINKS = [
@@ -27,6 +28,7 @@ type HomePost = {
   comment_count: number
   created_at: string
   boards: { slug: string; name: string } | { slug: string; name: string }[]
+  profiles: { nickname: string; role?: string } | { nickname: string; role?: string }[] | null
 }
 
 export default async function Home() {
@@ -39,15 +41,14 @@ export default async function Home() {
   // 최신 게시글 5개
   const { data: latestPosts } = await supabase
     .from('posts')
-    .select('id, title, like_count, comment_count, created_at, boards(slug, name)')
+    .select('id, title, like_count, comment_count, created_at, boards(slug, name), profiles(nickname, role)')
     .eq('status', 'published')
     .order('created_at', { ascending: false })
     .limit(5)
-
   // 인기글 5개 (좋아요 순)
   const { data: popularPosts } = await supabase
     .from('posts')
-    .select('id, title, like_count, comment_count, created_at, boards(slug, name)')
+    .select('id, title, like_count, comment_count, created_at, boards(slug, name), profiles(nickname, role)')
     .eq('status', 'published')
     .order('like_count', { ascending: false })
     .order('created_at', { ascending: false })
@@ -105,6 +106,8 @@ export default async function Home() {
       <div className="home-list">
         {posts.map((post) => {
           const board = Array.isArray(post.boards) ? post.boards[0] : post.boards
+          const author = Array.isArray(post.profiles) ? post.profiles[0] : post.profiles
+          const role = (author as { role?: string })?.role
           const d = new Date(post.created_at)
           const dateStr = `${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
           return (
@@ -121,6 +124,10 @@ export default async function Home() {
                 )}
               </span>
               <span className="home-post-meta">
+                <span className={`home-post-author ${role === 'admin' ? 'is-admin' : role === 'official' ? 'is-official' : ''}`}>
+                  <RoleBadge role={role} />
+                  {author?.nickname ?? '익명'}
+                </span>
                 {post.like_count > 0 && <span className="home-like">♥ {post.like_count}</span>}
                 <span>{dateStr}</span>
               </span>
