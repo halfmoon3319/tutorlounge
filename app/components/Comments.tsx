@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '../../lib/supabase-browser'
 import SendNoteButton from './SendNoteButton'
-
+import RoleBadge from './RoleBadge'
 type Comment = {
   id: number
   body: string
   created_at: string
   author_id: string
   parent_id: number | null
-  profiles: { nickname: string } | { nickname: string }[] | null
+  profiles: { nickname: string; role?: string } | { nickname: string; role?: string }[] | null
 }
 
 export default function Comments({ postId }: { postId: number }) {
@@ -31,7 +31,7 @@ export default function Comments({ postId }: { postId: number }) {
   async function loadComments() {
     const { data } = await supabase
       .from('comments')
-      .select('id, body, created_at, author_id, parent_id, profiles(nickname)')
+      .select('id, body, created_at, author_id, parent_id, profiles(nickname, role)')
       .eq('post_id', postId)
       .eq('status', 'published')
       .order('created_at', { ascending: true })
@@ -141,7 +141,8 @@ export default function Comments({ postId }: { postId: number }) {
       <div className={isReply ? 'comment-item comment-reply' : 'comment-item'} key={c.id}>
         <div className="comment-meta">
           {isReply && <span className="reply-arrow">↳</span>}
-          <span className="comment-author">
+          <span className={`comment-author ${(author as { role?: string })?.role === 'admin' ? 'is-admin' : (author as { role?: string })?.role === 'official' ? 'is-official' : ''}`}>
+            <RoleBadge role={(author as { role?: string })?.role} />
             <SendNoteButton targetId={c.author_id} targetName={author?.nickname ?? '익명'} />
           </span>
           <span className="comment-date">{formatDate(c.created_at)}</span>

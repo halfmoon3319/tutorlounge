@@ -50,7 +50,7 @@ body {
 .nav-section { margin-bottom: 8px; }
 
 /* ===== 메인 영역 ===== */
-.main { min-width: 0; }
+.main { min-width: 0; width: 100%; }
 .hero { background: var(--coral-soft); border: 0.5px solid var(--coral-border); border-radius: 12px; padding: 20px 22px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .hero-eyebrow { font-size: 11px; font-weight: bold; color: var(--coral-text); letter-spacing: 0.02em; margin-bottom: 6px; }
 .hero-title { font-size: 16px; font-weight: bold; color: var(--coral-text-dark); margin-bottom: 4px; }
@@ -1713,4 +1713,49 @@ body {
 }
 .reply-cnt {
   flex-shrink: 0;
+}
+/* 역할 표시 (D 스타일: 아이콘 + 색 닉네임) */
+.role-ico {
+  width: 14px;
+  height: 14px;
+  vertical-align: -2px;
+  margin-right: 3px;
+  flex-shrink: 0;
+}
+.role-ico-admin {
+  color: #E8693C;
+}
+.role-ico-official {
+  color: #2f6f5e;
+}
+
+/* 관리자 닉네임 색 */
+.author.is-admin .nickname-btn {
+  color: #E8693C;
+  font-weight: 700;
+}
+.author.is-official .nickname-btn {
+  color: #2f6f5e;
+  font-weight: 700;
+}
+
+/* 작성자 영역 정렬 */
+.post-meta .author {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.comment-author.is-admin .nickname-btn { color: #E8693C; font-weight: 700; }
+.comment-author.is-official .nickname-btn { color: #2f6f5e; font-weight: 700; }
+.comment-meta .comment-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.col-author.is-admin { color: #E8693C; font-weight: 700; }
+.col-author.is-official { color: #2f6f5e; font-weight: 700; }
+.col-author {
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }

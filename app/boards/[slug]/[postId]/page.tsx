@@ -7,7 +7,7 @@ import LikeButton from '../../../components/LikeButton'
 import PostActions from '../../../components/PostActions'
 import sanitizeHtml from 'sanitize-html'
 import SendNoteButton from '../../../components/SendNoteButton'
-
+import RoleBadge from '../../../components/RoleBadge'
 export default async function PostDetailPage({
   params,
 }: {
@@ -24,7 +24,7 @@ export default async function PostDetailPage({
 
   const { data: post } = await supabase
     .from('posts')
-    .select('id, title, body, view_count, like_count, comment_count, created_at, author_id, board_id, profiles(nickname)')
+    .select('id, title, body, view_count, like_count, comment_count, created_at, author_id, board_id, profiles(nickname, role)')
     .eq('id', postId)
     .eq('status', 'published')
     .single()
@@ -99,7 +99,8 @@ export default async function PostDetailPage({
           <h1 className="post-title">{post.title}</h1>
 
           <div className="post-meta">
-            <span className="author">
+            <span className={`author ${(author as { role?: string })?.role === 'admin' ? 'is-admin' : (author as { role?: string })?.role === 'official' ? 'is-official' : ''}`}>
+              <RoleBadge role={(author as { role?: string })?.role} />
               <SendNoteButton targetId={post.author_id} targetName={nickname} />
             </span>
             <span>{dateStr}</span>

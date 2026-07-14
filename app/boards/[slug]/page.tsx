@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '../../../lib/supabase-server'
 import Sidebar from '../../components/Sidebar'
+import RoleBadge from '../../components/RoleBadge'
 import { notFound } from 'next/navigation'
 
 // 카테고리 이름 → 색상 클래스 매핑
@@ -72,7 +73,7 @@ export default async function BoardPage({
   let postsQuery = supabase
     .from('posts')
     .select(
-      'id, title, view_count, like_count, comment_count, download_count, created_at, category_id, profiles(nickname), categories(name), post_attachments(id)',
+      'id, title, view_count, like_count, comment_count, download_count, created_at, category_id, profiles(nickname, role), categories(name), post_attachments(id)',
       { count: 'exact' }
     )
     .eq('board_id', board.id)
@@ -182,7 +183,10 @@ export default async function BoardPage({
                         )}
                       </Link>
                     </div>
-                    <div className="col-author">{author?.nickname ?? '익명'}</div>
+                    <div className={`col-author ${(author as { role?: string })?.role === 'admin' ? 'is-admin' : (author as { role?: string })?.role === 'official' ? 'is-official' : ''}`}>
+                      <RoleBadge role={(author as { role?: string })?.role} />
+                      {author?.nickname ?? '익명'}
+                    </div>
                     <div className="col-date">{dateStr}</div>
                     <div className="col-dl">
                       {isResource
